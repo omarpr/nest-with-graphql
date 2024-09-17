@@ -26,7 +26,7 @@ npm i @nestjs/graphql @nestjs/mercurius graphql mercurius
 ```
 6. Open the project using your favorite editor
 7. Make sure the IDE is using the correct version of Node.js
-8. Change from Express to Fastify in main.ts, it will end up like this:
+8. Change from Express to Fastify in `main.ts`, it will end up like this:
 ```typescript
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -49,8 +49,8 @@ bootstrap();
 npm run start:dev
 ```
 10. Navigate to http://localhost:3000/
-11. Make sure it shows "Hello World!"
-12. Prepare application for GraphQL
+11. Make sure it shows `Hello World!`
+12. Let's prepare the application for GraphQL
 13. Open `src/app.module.ts` and add the following module to the imports:
 ```typescript
     GraphQLModule.forRoot<MercuriusDriverConfig>({
