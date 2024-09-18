@@ -1,5 +1,6 @@
 # nest-with-graphql
-
+## Step by step
+0. You should have Postgres installed on your machine
 1. Make sure you are using the latest LTS version of Node.js
 ```
 nvm list
@@ -65,12 +66,17 @@ npm run start:dev
 nest g resolver
 ```
 and name it `hello`
-16. Open `src/hello/hello.resolver.ts` and add the following query:
+
+16a. Open `src/hello/hello.resolver.ts` and add the following query:
 ```typescript
   @Query(() => String)
   hello(): string {
     return 'Hello World!';
   }
+```
+16b. Open the `AppModule` and add the `HelloResolver` to the providers:
+```typescript
+  providers: [AppService, HelloResolver],
 ```
 17. Now we can navigate to the playground (graphiql) by visiting http://localhost:3000/graphiql
 18. Run the following query:
@@ -193,7 +199,7 @@ export class CreateTaskInput {
 }
 ```
 46. Now let's prepare the `TasksResolver` to use TypeORM to do operations on the database
-47. Open `src/tasks/tasks.resolver.ts` and set this to the constructor:
+47. Open `src/tasks/tasks.service.ts` and set this to the constructor:
 ```typescript
   constructor(
     @InjectRepository(Task)
@@ -219,7 +225,7 @@ export class CreateTaskInput {
     return await this.findOne(id);
   }
 ```
-49. Now, let's run the following mutation on the playground (graphiql):
+49. Now, let's run the following mutation multiple times on the playground (graphiql):
 ```graphql
 mutation {
   createTask(
@@ -326,7 +332,7 @@ mutation {
 63. Now, let's run the following mutation on the playground (graphiql):
 ```graphql
 mutation {
-  removeTask(id: 5) {
+  removeTask(id: 2) {
     id
     title
     description
