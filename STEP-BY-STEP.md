@@ -1,6 +1,9 @@
 # nest-with-graphql
 ## Step by step
-0. You should have Postgres installed on your machine
+0. You should have Postgres installed on your machine. If you don't, you can install it using Homebrew:
+```
+brew install postgresql
+```
 1. Make sure you are using the latest LTS version of Node.js
 ```
 nvm list
@@ -23,7 +26,7 @@ cd nest-with-graphql
 ```
 npm i @nestjs/platform-fastify
 npm i @nestjs/typeorm typeorm pg
-npm i @nestjs/graphql @nestjs/mercurius graphql mercurius
+npm i @nestjs/graphql @nestjs/mercurius graphql mercurius@14
 ```
 6. Open the project using your favorite editor
 7. Make sure the IDE is using the correct version of Node.js
@@ -54,6 +57,10 @@ npm run start:dev
 12. Let's prepare the application for GraphQL
 13. Open `src/app.module.ts` and add the following module to the imports:
 ```typescript
+import { Query, Resolver } from '@nestjs/graphql';
+
+...
+
     GraphQLModule.forRoot<MercuriusDriverConfig>({
       driver: MercuriusDriver,
       autoSchemaFile: true,
@@ -67,14 +74,15 @@ nest g resolver
 ```
 and name it `hello`
 
-16a. Open `src/hello/hello.resolver.ts` and add the following query:
+16. Now, let's add a query to the resolver
+* Open `src/hello/hello.resolver.ts` and add the following query:
 ```typescript
   @Query(() => String)
   hello(): string {
     return 'Hello World!';
   }
 ```
-16b. Open the `AppModule` and add the `HelloResolver` to the providers:
+* Open the `AppModule` and verify that the `HelloResolver` is in the providers:
 ```typescript
   providers: [AppService, HelloResolver],
 ```
@@ -102,6 +110,7 @@ and name it `hello`
       synchronize: true,
     }),
 ```
+23. Remember to use your credentials for Postgres
 24. The app will error out because can't find the database
 25. Go to the console and create the database using the following command:
 ```
@@ -118,7 +127,7 @@ nest g resource tasks
 30. Open `src/tasks/tasks.resolver.ts` and notice the generated resolver with the CRUD operations
 31. Open `src/tasks/entities/task.entity.ts` and notice the generated entity with an example field
 32. Open `src/tasks/tasks.service.ts` and notice the generated service with the CRUD operations
-33. Let's return some values on the `findAll` function.
+33. While on the `TasksService`, let's return some values on the `findAll` function.
 ```typescript
   findAll() {
     return [{ exampleField: 1 }, { exampleField: 2 }, { exampleField: 3 }];
@@ -133,7 +142,8 @@ nest g resource tasks
 }
 ```
 35. You should see the response on the right
-36. Let's return a value on the `findOne` function.
+36. Implementing `findOne`...
+* While on the `TasksService`, let's return a value on the `findOne` function.
 ```typescript
   findOne(id: number) {
     return {
@@ -141,6 +151,7 @@ nest g resource tasks
     };
   }
 ```
+* Notice I'm trying to barely make changes on the resolver
 37. Now, let's run the following query on the playground (graphiql):
 ```graphql
 {
@@ -273,7 +284,9 @@ mutation {
 }
 ```
 55. That should return all the tasks and you should see them on the right
-56. Let's implement the `update` function in the `TasksService`, first of all, let's remove the `id` field from the `UpdateTaskInput` since we can't update the ID:
+56. Implementing the `update` function...
+* Let's implement the `update` function in the `TasksService`
+* First of all, let's remove the `id` field from the `UpdateTaskInput` since we can't update the ID:
 ```typescript
   @Field(() => Int)
   id: number;
