@@ -110,7 +110,7 @@ and name it `hello`
       synchronize: true,
     }),
 ```
-23. Remember to use your credentials for Postgres
+* **Remember to use your credentials for Postgres**
 24. The app will error out because can't find the database
 25. Go to the console and create the database using the following command:
 ```
